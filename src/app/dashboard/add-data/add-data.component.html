@@ -1,11 +1,44 @@
-<form [formGroup]="addChildForm" (ngSubmit)="onSubmit()">
-    <h2>Ihr Kind anmelden!</h2>
-    <input placeholder="Name" type="input" formControlName="name"><br />
-    <input placeholder="Geburtsdatum" type="date" formControlName="birthDate"><br />
-    <select formControlName="kindergardenId">
-        <option value="" disabled>Bitte auswählen</option>
-        <option *ngFor="let kindergarden of kindergardens" [ngValue]="kindergarden.id">
-            {{kindergarden.name}}, {{kindergarden.address}}</option>
-    </select>
-    <button type="submit">Erfassen</button>
+<form #form=ngForm [formGroup]="addChildForm" (ngSubmit)="onSubmit();">
+  <h2>Ihr Kind anmelden!</h2>
+
+  <div>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput type="input" formControlName="name" pattern="[a-zA-Z]*">
+      <mat-error *ngIf="addChildForm.controls['name'].hasError('required')">Der Name des Kindes muss angegeben werden!</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-form-field>
+      <mat-label>Geburtsdatum</mat-label>
+      <input matInput type="date" formControlName="birthDate">
+      <mat-error *ngIf="addChildForm.controls['birthDate'].hasError('required')">Der Geburtstag des Kindes muss angegeben werden!</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-form-field>
+      <mat-label>Kindergarten</mat-label>
+      <mat-select formControlName="kindergardenId">
+        <mat-option value="" disabled>Bitte auswählen</mat-option>
+        <mat-option *ngFor="let kindergarden of storeService.kindergardens" [value]="kindergarden.id">
+          {{kindergarden.name}}, {{kindergarden.address}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="addChildForm.controls['kindergardenId'].hasError('required')">Ein Kindergarten muss ausgewählt sein!</mat-error>
+    </mat-form-field>
+  </div>
+
+  <button mat-raised-button color="accent" type="submit">Erfassen</button>
 </form>
+
+<div *ngIf="showSuccessMsg" class="alert alert-success alert-dismissible mt-3" role="alert">
+  <span>Anmeldung wurde erfolgreich durchgeführt!</span>
+  <button
+    type="button"
+    class="btn-close"
+    data-dismiss="alert"
+    aria-label="close"
+    (click)="showSuccessMsg = !showSuccessMsg">
+  </button>
+</div>

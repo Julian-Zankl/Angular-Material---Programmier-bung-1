@@ -1,2 +1,10 @@
-<app-data></app-data>
-<app-add-data></app-add-data>
+<app-data (pageChanged)="currentPage = $event"></app-data>
+
+<br>
+
+<app-button [hidden]="hidden" (onButtonClick)="hidden = !hidden"></app-button>
+
+<div *ngIf="!hidden">
+  <mat-divider class="my-4"></mat-divider>
+  <app-add-data [currentPage]="currentPage"></app-add-data>
+</div>

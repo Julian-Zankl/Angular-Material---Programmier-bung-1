@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { BackendService } from 'src/app/shared/backend.service';
-import { kindergardens } from 'src/app/shared/data';
 import { StoreService } from 'src/app/shared/store.service';
 
 @Component({
@@ -9,24 +8,30 @@ import { StoreService } from 'src/app/shared/store.service';
   templateUrl: './add-data.component.html',
   styleUrls: ['./add-data.component.scss']
 })
-export class AddDataComponent implements OnInit{
+export class AddDataComponent implements OnInit {
 
-  constructor(private formbuilder: FormBuilder, public storeService: StoreService, public backendService: BackendService) {
-  }
-  public kindergardens = kindergardens;
-  public addChildForm: any;
+  constructor(private formBuilder: FormBuilder, public storeService: StoreService, public backendService: BackendService) {}
+
+  @Input({required: true}) public currentPage!: number;
+  @ViewChild('form') form!: NgForm;
+
+  public addChildForm!: FormGroup;
+  public showSuccessMsg = false;
 
   ngOnInit(): void {
-    this.addChildForm = this.formbuilder.group({
+    this.addChildForm = this.formBuilder.group({
       name: ['', [Validators.required]],
       kindergardenId: ['', Validators.required],
-      birthDate: [null, Validators.required]
+      birthDate: [null, Validators.required,]
     })
   }
 
   onSubmit() {
-    if(this.addChildForm.valid) {
-      console.log(this.addChildForm.value);
+    if (this.addChildForm.valid) {
+      this.backendService.addChild(this.addChildForm.value, this.currentPage);
+      this.addChildForm.reset();
+      this.form.resetForm();
+      this.showSuccessMsg = true;
     }
   }
 }

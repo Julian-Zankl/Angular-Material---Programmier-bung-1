@@ -1,0 +1,11 @@
+<button mat-raised-button (click)="onButtonClick.emit()">
+  <ng-container *ngIf="hidden">
+    <span>Formular öffnen</span>
+    <mat-icon>expand_more</mat-icon>
+  </ng-container>
+
+  <ng-container *ngIf="!hidden">
+    <span>Formular schließen</span>
+    <mat-icon>expand_less</mat-icon>
+  </ng-container>
+</button>
