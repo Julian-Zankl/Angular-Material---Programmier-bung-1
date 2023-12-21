@@ -35,6 +35,15 @@ export class DataComponent implements OnInit, AfterViewInit {
   public dataSource = new MatTableDataSource<ChildResponse>();
 
   ngOnInit() {
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'kindergarten':
+          return item.kindergarden.name;
+        default:
+          // @ts-ignore
+          return item[property];
+      }
+    }
     this.backendService.getChildren(this.currentPage);
     this.storeService.children$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((children) => {
       this.dataSource.data = children;
