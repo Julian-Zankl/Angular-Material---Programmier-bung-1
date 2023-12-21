@@ -26,6 +26,10 @@ import { HomeComponent } from './home/home.component';
 import { MatCardModule } from '@angular/material/card';
 import { AboutPageComponent } from './about-page/about-page.component';
 import { NavComponent } from './nav/nav.component';
+import { MatSortModule } from '@angular/material/sort';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DetailPageComponent } from './detail-page/detail-page.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +42,9 @@ import { NavComponent } from './nav/nav.component';
     SidenavComponent,
     HomeComponent,
     AboutPageComponent,
-    NavComponent
+    NavComponent,
+    LoadingSpinnerComponent,
+    DetailPageComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +64,9 @@ import { NavComponent } from './nav/nav.component';
     MatSidenavModule,
     MatToolbarModule,
     MatListModule,
-    MatCardModule
+    MatCardModule,
+    MatSortModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

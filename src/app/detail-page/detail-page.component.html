@@ -1,0 +1,45 @@
+<h2>Wählen Sie den gewünschten Kindergarten aus, zu dem sie zusätzliche Informationen erhalten möchten.</h2>
+
+<!-- Kindergarten Auswahl -->
+<mat-form-field class="w-25">
+  <mat-label>Kindergarten</mat-label>
+  <mat-select (valueChange)="onSelection($event)">
+    <mat-option *ngFor="let kindergarten of storeService.kindergardens" [value]="kindergarten.id">
+      {{ kindergarten.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-card *ngIf="selectedKindergarden">
+  <mat-card-header>
+    <h2>{{ selectedKindergarden.name }}</h2>
+  </mat-card-header>
+  <!--<img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">-->
+  <mat-card-content>
+    <img class="image float-end" [src]="selectedKindergarden.imageUrl" alt="Kindergarten Foto">
+
+    <div class="d-flex flex-column">
+      <div class="flex-row-center pb-3">
+        <div class="flex-row-center flex-b-10">
+          <mat-icon class="icon">contact_mail</mat-icon>
+          <span>Adresse</span>
+        </div>
+        <span class="value">{{ selectedKindergarden.address }}</span>
+      </div>
+      <div class="flex-row-center pb-3">
+        <div class="flex-row-center flex-b-10">
+          <mat-icon class="icon">account_circle</mat-icon>
+          <span>Betreiber</span>
+        </div>
+        <span class="value">{{ selectedKindergarden.betreiber }}</span>
+      </div>
+      <div class="flex-row-center">
+        <div class="flex-row-center flex-b-10">
+          <mat-icon class="icon">title</mat-icon>
+          <span>Typ</span>
+        </div>
+        <span class="value">{{ selectedKindergarden.typ === 1 ? 'Privat' : 'Öffentlich' }}</span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

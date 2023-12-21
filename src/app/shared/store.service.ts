@@ -15,6 +15,9 @@ export class StoreService {
   public children: ChildResponse[] = [];
   public kindergardens: Kindergarden[] = [];
   public childrenTotalCount = 0;
+  public isLoading = false;
+  public deleteId = '-1';
+  public showDeleteMsg = false;
 
   childrenChanged() {
     return this._children$.next(this.children);

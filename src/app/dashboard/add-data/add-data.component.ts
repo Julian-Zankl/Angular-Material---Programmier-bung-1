@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { BackendService } from 'src/app/shared/backend.service';
 import { StoreService } from 'src/app/shared/store.service';
+import { Child } from '../../shared/interfaces/Child';
 
 @Component({
   selector: 'app-add-data',
@@ -28,7 +29,10 @@ export class AddDataComponent implements OnInit {
 
   onSubmit() {
     if (this.addChildForm.valid) {
-      this.backendService.addChild(this.addChildForm.value, this.currentPage);
+      const child: Child = this.addChildForm.value;
+      child.anmeldung = new Date();
+
+      this.backendService.addChild(child, this.currentPage);
       this.addChildForm.reset();
       this.form.resetForm();
       this.showSuccessMsg = true;

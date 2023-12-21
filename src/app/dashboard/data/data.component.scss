@@ -10,3 +10,14 @@ mat-paginator {
   display: flex;
   justify-content: center;
 }
+
+tr:not(.mat-mdc-header-row):hover {
+  background-color: darkslategrey;
+  cursor: pointer;
+}
+
+mat-spinner {
+  width: 50px !important;
+  height: 50px !important;
+  display: inline-block;
+}

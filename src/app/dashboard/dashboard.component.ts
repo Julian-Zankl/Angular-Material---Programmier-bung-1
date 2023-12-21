@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { StoreService } from '../shared/store.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,6 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
+  constructor(public storeService: StoreService) {
+    this.storeService.isLoading = true;
+  }
+
   public currentPage = 0;
   public hidden = false;
 }

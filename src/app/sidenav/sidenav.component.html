@@ -1,8 +1,9 @@
 <mat-sidenav-container>
-  <mat-sidenav #sidenav role="navigation">
+  <mat-sidenav #sidenav role="navigation" [autoFocus]="false">
     <app-nav (sidenavClose)="sidenav.toggle()"></app-nav>
   </mat-sidenav>
   <mat-sidenav-content>
+    <app-loading-spinner></app-loading-spinner>
     <app-header (sidenavToggle)="sidenav.toggle()"></app-header>
     <main>
       <router-outlet></router-outlet>

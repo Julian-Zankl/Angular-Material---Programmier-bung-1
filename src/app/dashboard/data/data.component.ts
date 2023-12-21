@@ -1,4 +1,13 @@
-import { AfterViewInit, Component, DestroyRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { BackendService } from 'src/app/shared/backend.service';
 import { CHILDREN_PER_PAGE } from 'src/app/shared/constants';
 import { StoreService } from 'src/app/shared/store.service';
@@ -6,6 +15,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ChildResponse } from '../../shared/interfaces/Child';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-data',
@@ -14,15 +24,15 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class DataComponent implements OnInit, AfterViewInit {
 
-  constructor(public storeService: StoreService, public backendService: BackendService, private destroyRef: DestroyRef) {}
+  constructor(public storeService: StoreService, public backendService: BackendService, private destroyRef: DestroyRef, private cdRef: ChangeDetectorRef) {}
 
   @Output() public pageChanged = new EventEmitter<number>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   public currentPage = 0;
-  public displayedColumns: string[] = ['name', 'kindergarten', 'adresse', 'alter', 'geburtsdatum', 'abmelden'];
+  public displayedColumns: string[] = ['name', 'anmeldung', 'kindergarten', 'adresse', 'alter', 'geburtsdatum', 'abmelden'];
   public dataSource = new MatTableDataSource<ChildResponse>();
-  public showDeleteMsg = false;
 
   ngOnInit() {
     this.backendService.getChildren(this.currentPage);
@@ -33,6 +43,9 @@ export class DataComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.dataSource.sort.sort({ id: 'name', start: 'asc', disableClear: false });
+    this.cdRef.detectChanges();
   }
 
   getAge(birthDate: string) {
@@ -44,6 +57,21 @@ export class DataComponent implements OnInit, AfterViewInit {
         age--;
     }
     return age;
+  }
+
+  removeChild(childId: string) {
+    this.storeService.deleteId = childId;
+    this.backendService.removeChild(childId, this.currentPage);
+  }
+
+  onInputChange(selectedValue: string) {
+    this.dataSource.filter = selectedValue.trim();
+  }
+
+  onSelection(value: number | 'all') {
+    this.dataSource.data = value === 'all'
+      ? this.storeService.children
+      : this.storeService.children.filter(child => child.kindergardenId === value);
   }
 
   protected readonly CHILDREN_PER_PAGE = CHILDREN_PER_PAGE;
